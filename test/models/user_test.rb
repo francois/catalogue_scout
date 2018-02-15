@@ -4,7 +4,7 @@ class UserTest < ActiveSupport::TestCase
   setup do
     @group   = Group.new
     @user    = @group.users.build
-    @product = @group.products.build(name: "Tent")
+    @product = @group.products.build(name: "Tent", description: "8x12")
   end
 
   test "newly instantiated user has a slug" do

@@ -5,7 +5,12 @@ class User < ApplicationRecord
     raise ActiveRecord::RecordInvalid.new(product) if product.invalid?
 
     group.products << product
-    ProductAddedToInventory.new(product_slug: product.slug, group_slug: group.slug)
+    ProductAddedToInventory.new(
+      description: product.description,
+      group_slug: group.slug,
+      name: product.name,
+      product_slug: product.slug,
+    )
   end
 
   belongs_to :group

@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2018_02_15_042639) do
     t.string "slug", null: false
     t.bigint "group_id", null: false
     t.string "name", null: false
+    t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_products_on_group_id"

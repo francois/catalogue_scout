@@ -4,6 +4,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.string :slug, null: false, index: { unique: true }
       t.belongs_to :group, null: false, foreign_key: true
       t.string :name, null: false
+      t.text :description, null: false
 
       t.timestamps
     end

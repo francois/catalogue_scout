@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
   include HasSlug
 
-  validates :name, presence: true
+  validates :name, :description, presence: true
 end
