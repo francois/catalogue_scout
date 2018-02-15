@@ -30,12 +30,15 @@ class EventLogRecord < ApplicationRecord
   validates :data, presence: true
 
   def initialize(attrs={})
-    meta = attrs.delete(:meta) || attrs.delete("meta") || Hash.new
+    attrs = attrs.symbolize_keys
+    meta = attrs.delete(:meta) || Hash.new
     data = data_attrs.fetch(self.class).map do |attr|
-      [attr, attrs.fetch(attr.to_sym){ attrs.fetch(attr.to_s) }]
+      [attr, attrs.fetch(attr)]
     end.to_h.compact
 
-    super(meta: meta, data: data)
+    # We make keys strings because the data will be serialized to
+    # JSON and JSON object keys must be strings.
+    super(meta: meta.stringify_keys, data: data.stringify_keys)
   end
 
   cattr_accessor :data_attrs
@@ -53,6 +56,8 @@ class EventLogRecord < ApplicationRecord
       self.data_attrs[self] ||= Set.new
       self.data_attrs[self]  << attr
       define_method(attr) do
+        # It is guaranteed by the initializer implementation that attribute
+        # keys are strings.
         data[attr.to_s]
       end
     end
