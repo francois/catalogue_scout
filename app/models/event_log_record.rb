@@ -1,0 +1,2 @@
+class EventLogRecord < ApplicationRecord
+end
