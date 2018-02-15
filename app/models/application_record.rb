@@ -2,7 +2,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   after_initialize {|r| r.clear_pending_event_log_records}
-  after_initialize {|r| r.slug = r.class.generate_slug if r.attributes.include?("slug") && r.slug.blank? }
+  after_initialize {|r| r.slug = r.class.generate_slug if r.slug.blank? }
   after_save       {|r| r.pending_event_log_records.each(&:save!) }
   after_commit     {|r| r.clear_pending_event_log_records }
 
@@ -17,6 +17,14 @@ class ApplicationRecord < ActiveRecord::Base
   def publish_event_log_record(record)
     pending_event_log_records << record
     self
+  end
+
+  def to_key
+    [slug]
+  end
+
+  def to_param
+    slug if persisted?
   end
 
   def self.generate_slug

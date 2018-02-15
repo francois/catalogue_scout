@@ -17,10 +17,12 @@ ActiveRecord::Schema.define(version: 2018_02_15_042639) do
 
   create_table "event_log_records", force: :cascade do |t|
     t.string "type", null: false
+    t.string "slug", null: false
     t.jsonb "meta", null: false
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_event_log_records_on_slug", unique: true
     t.index ["type"], name: "index_event_log_records_on_type"
   end
 

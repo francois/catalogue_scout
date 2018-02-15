@@ -43,6 +43,10 @@ class EventLogRecord < ApplicationRecord
 
   cattr_accessor :data_attrs
 
+  def self.generate_slug
+    SecureRandom.uuid
+  end
+
   # Declares an attribute that is stored in the data portion of the event log record.
   #
   # Data attributes are the different attributes we wish to preserve about the state
