@@ -22,8 +22,10 @@ class UserTest < ActiveSupport::TestCase
     results = @user.pending_event_log_records.select{|r| r.kind_of?(ProductAddedToInventory)}
     assert_equal 1, results.size
     result = results.first
-    assert_equal @group.slug,   result.group_slug
-    assert_equal @product.slug, result.product_slug
+    assert_equal @product.name,        result.name
+    assert_equal @product.description, result.description
+    assert_equal @group.slug,          result.group_slug
+    assert_equal @product.slug,        result.product_slug
   end
 
   test "#add_product_to_inventory raises ActiveRecord::RecordInvalid when the product is not valid" do

@@ -3,6 +3,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   after_initialize {|r| r.clear_pending_event_log_records}
   after_initialize {|r| r.slug = r.class.generate_slug if r.attributes.include?("slug") && r.slug.blank? }
+  after_save       {|r| r.pending_event_log_records.each(&:save!) }
+  after_commit     {|r| r.clear_pending_event_log_records }
 
   validate :slug_has_not_changed, on: :update
 
