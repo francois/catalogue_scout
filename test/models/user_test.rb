@@ -16,8 +16,12 @@ class UserTest < ActiveSupport::TestCase
     assert @group.products.include?(@product)
   end
 
-  test "#add_product_to_inventory returns a ProductAddedToInventory" do
-    result = @user.add_product_to_inventory(@product)
+  test "#add_product_to_inventory publishes a ProductAddedToInventory" do
+    @user.add_product_to_inventory(@product)
+    assert @user.pending_event_log_records.any?
+    results = @user.pending_event_log_records.select{|r| r.kind_of?(ProductAddedToInventory)}
+    assert_equal 1, results.size
+    result = results.first
     assert_equal @group.slug,   result.group_slug
     assert_equal @product.slug, result.product_slug
   end
