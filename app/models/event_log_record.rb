@@ -31,8 +31,8 @@ class EventLogRecord < ApplicationRecord
 
   def initialize(attrs={})
     meta = attrs.delete(:meta) || attrs.delete("meta") || Hash.new
-    data = data_attrs.map do |attr|
-      [attr, attrs[attr.to_sym] || attrs[attr.to_s]]
+    data = data_attrs.fetch(self.class).map do |attr|
+      [attr, attrs.fetch(attr.to_sym){ attrs.fetch(attr.to_s) }]
     end.to_h.compact
 
     super(meta: meta, data: data)
@@ -45,10 +45,13 @@ class EventLogRecord < ApplicationRecord
   # Data attributes are the different attributes we wish to preserve about the state
   # of the system. Slugs are one of the primary ways to identify objects in this system,
   # and are the most important values to record in events.
+  #
+  # All declared attributes are required. A `KeyError` will be raised for missing attributes.
   def self.data_reader(*attrs)
     Array(attrs).flatten.compact.map(&:to_sym).each do |attr|
-      self.data_attrs ||= Set.new
-      data_attrs << attr
+      self.data_attrs       ||= Hash.new
+      self.data_attrs[self] ||= Set.new
+      self.data_attrs[self]  << attr
       define_method(attr) do
         data[attr.to_s]
       end
