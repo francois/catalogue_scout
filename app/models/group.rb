@@ -1,9 +1,6 @@
 class Group < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
-  has_many :users
-  has_many :products
-
   before_create :register_group_event
 
   def register_group_event
@@ -14,4 +11,7 @@ class Group < ApplicationRecord
       )
     )
   end
+
+  has_many :users,    autosave: true
+  has_many :products, autosave: true
 end

@@ -34,4 +34,20 @@ class UserTest < ActiveSupport::TestCase
       @user.add_product_to_inventory(@product)
     end
   end
+
+  test "#add_user_to_group publishes a UserAddedToGroup event" do
+    added = User.new
+    @user.add_user_to_group(added)
+    results = @user.pending_event_log_records.select{|r| r.kind_of?(UserAddedToGroup)}
+    assert_equal 1, results.size
+    result = results.first
+    assert_equal added.slug, result.user_slug
+    assert_equal @group.slug, result.group_slug
+  end
+
+  test "#add_user_to_group adds the user to the group" do
+    added = User.new
+    @user.add_user_to_group(added)
+    assert @group.users.include?(added)
+  end
 end
