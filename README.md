@@ -10,11 +10,10 @@ can do everything: manage inventory, reserve products, etc.
 
 ## Main Use Cases
 
-* User adds products to inventory
-    - Products may have 0..N pictures
-    - Products have a single description
+* User adds Product to inventory
     - Products belong to 0..N categories
-    - Products may have 0..N notes from previous Events
+    - Products have a description
+    - Products may have 0..N pictures
 * User adds User to Group
     - Email, password, name
 * User removes User from Group
