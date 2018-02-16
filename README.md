@@ -19,6 +19,7 @@ can do everything: manage inventory, reserve products, etc.
 * User removes User from Group
     - Last user can't leave
     - Can't remove self
+    - Can't remove a user that doesn't belong to the user's group
 * User registers Event
     - Events have a name/description
     - Events start and end on specific dates
@@ -55,6 +56,7 @@ can do everything: manage inventory, reserve products, etc.
 * Admin adds Group
 * Admin registers first User in Group
     - Email, password, name
+* Admin removes User from Group
 
 ## Product Examples
 

@@ -1,0 +1,1 @@
+CannotRemoveLastUserFromGroup = Class.new(StandardError)

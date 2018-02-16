@@ -65,4 +65,29 @@ class UserTest < ActiveSupport::TestCase
     assert_equal @user.name, event.name
     assert_equal @user.slug, event.user_slug
   end
+
+  test "#remove_user_from_group raises an CannotRemoveLastUserFromGroup if only one user is in the group" do
+    group = Group.new
+    user = group.users.build
+    assert_raise CannotRemoveLastUserFromGroup do
+      user.remove_user_from_group(user)
+    end
+  end
+
+  test "#remove_user_from_group raises an ArgumentError if the user doesn't belong to the group" do
+    assert_raise ArgumentError do
+      @user.remove_user_from_group(User.new)
+    end
+  end
+
+  test "#remove_user_from_group publishes a UserRemovedFromGroup event" do
+    added = User.new
+    @user.add_user_to_group(added)
+    @user.remove_user_from_group(added)
+    results = @user.pending_event_log_records.select{|r| r.kind_of?(UserRemovedFromGroup)}
+    assert_equal 1, results.size
+    result = results.first
+    assert_equal @group.slug, result.group_slug
+    assert_equal added.slug, result.user_slug
+  end
 end

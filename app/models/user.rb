@@ -1,6 +1,18 @@
 class User < ApplicationRecord
   before_create :publish_user_registered
 
+  def remove_user_from_group(user)
+    raise ArgumentError unless group.users.include?(user)
+    raise CannotRemoveLastUserFromGroup if group.users.size == 1
+
+    publish_event_log_record(
+      UserRemovedFromGroup.new(
+        group_slug: group.slug,
+        user_slug:  user.slug,
+      )
+    )
+  end
+
   def publish_user_registered
     publish_event_log_record(
       UserRegistered.new(
