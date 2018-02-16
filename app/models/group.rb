@@ -1,9 +1,9 @@
 class Group < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
-  before_create :register_group_event
+  before_create :publish_group_registered_event
 
-  def register_group_event
+  def publish_group_registered_event
     publish_event_log_record(
       GroupRegistered.new(
         group_slug: slug,

@@ -50,4 +50,19 @@ class UserTest < ActiveSupport::TestCase
     @user.add_user_to_group(added)
     assert @group.users.include?(added)
   end
+
+  test "calling #save creates a UserRegistered event" do
+    @group.attributes = {name: "10eme"}
+    @user.attributes = {
+      name: "Francois",
+      email: "francois@teksol.info",
+      encrypted_password: BCrypt::Password.create("password"),
+    }
+    @user.save!
+
+    event = UserRegistered.first!
+    assert_equal @user.email, event.email
+    assert_equal @user.name, event.name
+    assert_equal @user.slug, event.user_slug
+  end
 end

@@ -1,4 +1,16 @@
 class User < ApplicationRecord
+  before_create :publish_user_registered
+
+  def publish_user_registered
+    publish_event_log_record(
+      UserRegistered.new(
+        email: email,
+        name: name,
+        user_slug: slug,
+      )
+    )
+  end
+
   def add_user_to_group(user)
     group.users << user
     publish_event_log_record(
