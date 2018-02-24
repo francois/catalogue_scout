@@ -27,12 +27,14 @@ ActiveRecord::Schema.define(version: 2018_02_15_042639) do
   end
 
   create_table "events", force: :cascade do |t|
+    t.string "slug", null: false
     t.bigint "user_id", null: false
     t.string "name", null: false
     t.date "begin_on", null: false
     t.date "end_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 

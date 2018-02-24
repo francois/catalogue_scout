@@ -1,0 +1,23 @@
+<%= content_for :page_title do %>Accueil<% end %>
+
+<div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-4">
+  <%= form_for :credentials, html: { class: "pure-form pure-form-stacked" } do |f| %>
+    <fieldset>
+      <legend>Ouvrir une session</legend>
+
+      <%= f.label :email %>
+      <%= f.email_field :email, placeholder: "francois@example.com" %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+
+      <%= f.submit "Ouvrir une session", class: "pure-button pure-button-primary" %>
+    </fieldset>
+  <% end %>
+</div>
+
+<div class="pure-u-1 pure-u-md-2-3 pure-u-lg-3-4">
+  <h2>
+  Bienvenue sur le Catalogue Scout!
+  </h2>
+</div>
